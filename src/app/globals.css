@@ -1,26 +1,55 @@
 @import "tailwindcss";
+@theme {
+  --color-stage-black: var(--background);
+  --color-stage-charcoal: #121212;
+  --color-gold: var(--gold-accent);
+  --color-gold-bright: #e8c766;
+  --color-platinum: var(--foreground);
 
+  --font-display: var(--font-playfair), serif;
+  --font-body: var(--font-inter), sans-serif;
+}
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #060606;
+  --foreground: #f5f5f7;
+  --gold-accent: #d4af37;
+  --gold-glow: rgba(212, 175, 55, 0.15);
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), sans-serif; /* Default body font */
+  overflow-x: hidden;
+}
+
+h1, h2, h3, .font-serif-premium {
+  font-family: var(--font-playfair), serif; /* Luxury title font */
+}
+
+
+/* Custom premium gold-accented scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold-accent);
+  border-radius: 3px;
+}
+.bg-truss-grid {
+  background-image:
+    linear-gradient(rgba(212, 175, 55, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 175, 55, 0.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
