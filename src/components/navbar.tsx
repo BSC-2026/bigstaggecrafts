@@ -9,7 +9,6 @@ const NAV_LINKS = [
   { label: "Legacy", href: "#legacy" },
   { label: "Services", href: "#services" },
   { label: "Experience", href: "#experience" },
-  { label: "Projects", href: "#portfolio" },
 ];
 
 export default function Navbar() {
@@ -27,24 +26,58 @@ export default function Navbar() {
     document.body.style.overflow = menuOpen ? "hidden" : "";
   }, [menuOpen]);
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setMenuOpen(false);
+    const target = document.querySelector(href);
+    if (target && window.lenisInstance) {
+      window.lenisInstance.scrollTo(target as HTMLElement, { offset: -80 });
+    } else if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <header className={`bg-red-500 inset-x-0 top-0 z-50 transition-colors duration-500 ${scrolled ? "bg-stage-black/90 backdrop-blur-md border-b border-white/5" : "bg-transparent"}`}>
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${
+        scrolled ? "bg-ink/90 backdrop-blur-md border-b border-white/5" : "bg-transparent"
+      }`}
+    >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 md:px-10">
-        <a href="#home" className="font-display text-lg tracking-wide text-platinum md:text-xl">Big Stage Crafts</a>
+        <a
+          href="#home"
+          onClick={(e) => handleNavClick(e, "#home")}
+          className="font-display text-lg tracking-wide text-platinum md:text-xl"
+        >
+          Big Stage Crafts
+        </a>
 
         <nav className="hidden items-center gap-9 md:flex">
           {NAV_LINKS.map((link) => (
-            <a key={link.href} href={link.href} className="text-sm font-medium text-platinum/70 transition-colors hover:text-gold">
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={(e) => handleNavClick(e, link.href)}
+              className="text-sm font-display text-platinum/70 transition-colors hover:text-gold"
+            >
               {link.label}
             </a>
           ))}
         </nav>
 
-        <a href="#contact" className="hidden rounded-sm border border-gold/60 px-5 py-2.5 text-sm font-medium text-gold transition-colors hover:bg-gold hover:text-stage-black md:inline-block">
+        <a
+          href="#contact"
+          onClick={(e) => handleNavClick(e, "#contact")}
+          className="hidden rounded-sm border border-gold/60 px-5 py-2.5 text-sm font-display text-gold transition-colors hover:bg-gold hover:text-ink md:inline-block"
+        >
           Plan Your Event
         </a>
 
-        <button aria-label={menuOpen ? "Close menu" : "Open menu"} onClick={() => setMenuOpen((v) => !v)} className="text-platinum md:hidden">
+        <button
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          onClick={() => setMenuOpen((v) => !v)}
+          className="text-platinum md:hidden"
+        >
           {menuOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
       </div>
@@ -56,15 +89,24 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden border-t border-white/5 bg-stage-black md:hidden"
+            className="overflow-hidden border-t border-white/5 bg-ink md:hidden"
           >
             <div className="flex flex-col gap-1 px-6 py-6">
               {NAV_LINKS.map((link) => (
-                <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)} className="py-3 text-base text-platinum/80 border-b border-white/5 last:border-none">
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  className="py-3 text-base text-platinum/80 border-b border-white/5 last:border-none"
+                >
                   {link.label}
                 </a>
               ))}
-              <a href="#contact" onClick={() => setMenuOpen(false)} className="mt-4 rounded-sm border border-gold/60 px-5 py-3 text-center text-sm font-medium text-gold">
+              <a
+                href="#contact"
+                onClick={(e) => handleNavClick(e, "#contact")}
+                className="mt-4 rounded-sm border border-gold/60 px-5 py-3 text-center text-sm font-medium text-gold"
+              >
                 Plan Your Event
               </a>
             </div>
