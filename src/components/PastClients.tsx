@@ -43,6 +43,13 @@ const PRIORITY_LOGOS: Logo[] = [
     src: "/logos/rotary.jpeg",
     description: "A member of Rotary Club.",
   },
+  
+   {
+    name: "Officer Training Academy",
+    src: "/logos/airforce.jpeg",
+    description: "Managed and organised some events.",
+  }
+
 ];
 
 

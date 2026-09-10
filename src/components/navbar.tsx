@@ -43,13 +43,13 @@ export default function Navbar() {
         scrolled ? "bg-ink/90 backdrop-blur-md border-b border-white/5" : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 md:px-10">
+      <div className="mx-auto flex max-w-8xl items-center justify-between px-6 py-5 md:px-16">
         <a
           href="#home"
           onClick={(e) => handleNavClick(e, "#home")}
-          className="font-display text-lg tracking-wide text-platinum md:text-xl"
+          className="font-display text-lg tracking-wide text-platinum md:text-3xl"
         >
-          Big Stage Crafts
+          BSC
         </a>
 
         <nav className="hidden items-center gap-9 md:flex">

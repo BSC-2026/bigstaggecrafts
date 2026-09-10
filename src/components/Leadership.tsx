@@ -117,9 +117,20 @@ function LeaderReveal({
             `}
           />
 
-          <p className="leader-bio mt-5 max-w-md text-base leading-relaxed text-muted font-display">
-            {leader.bio}
-          </p>
+        <p
+  className={`
+    leader-bio
+    mt-5
+    max-w-md
+    text-base
+    leading-relaxed
+    text-muted
+    font-display
+    ${fromLeft ? "" : "md:ml-auto"}
+  `}
+>
+  {leader.bio}
+</p>
         </div>
       </div>
 
