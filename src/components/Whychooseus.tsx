@@ -50,6 +50,33 @@ const CLIENT_LOGOS = [
     description:
       "A member of Rotary Club.",
   },
+  {
+    name: "Indian AirForce",
+    src: "/logos/airforce.jpeg",
+    description:"Managed and Organise Events"
+
+  },
+
+  {
+    name: "TamilNadu Police Departemnt",
+    src: "/logos/police.webp",
+    description:"Managed and Organise Events And Recently There Annual Celebration  At Egmore"
+
+  },
+
+  {
+    name: "Indian Navy",
+    src: "/logos/navy.jpeg",
+    description:"Managed and Organise Events"
+
+  },
+
+  {
+    name: "Officer Training Academy",
+    src: "/logos/ota.jpeg",
+    description:"Managed and Organise Events"
+
+  },
 ];
 
 export default function WhyChooseUs() {

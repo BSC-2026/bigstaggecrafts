@@ -10,6 +10,7 @@ interface MediaItem {
 
 // Your existing media — unchanged
 const MEDIA: MediaItem[] = [
+    { type: "videos", src: "/Videos/5.mp4" },
   { type: "photos", src: "/Photos/1.jpeg" },
   { type: "photos", src: "/Photos/2.jpeg" },
   { type: "videos", src: "/Videos/1.mp4" },
@@ -18,12 +19,12 @@ const MEDIA: MediaItem[] = [
   { type: "videos", src: "/Videos/2.mp4" },
   { type: "photos", src: "/Photos/5.jpeg" },
   { type: "photos", src: "/Photos/8.jpeg" },
+  { type: "videos", src: "/Videos/4.mp4" },
   { type: "photos", src: "/Photos/7.jpeg" },
-  { type: "videos", src: "/Videos/3.mp4" },
   { type: "photos", src: "/Photos/6.jpeg" },
+  { type: "videos", src: "/Videos/3.mp4" },
   { type: "photos", src: "/Photos/9.jpeg" },
   { type: "photos", src: "/Photos/10.jpeg" },
-  { type: "videos", src: "/Videos/4.mp4" },
   { type: "photos", src: "/Photos/11.jpeg" },
 ];
 
@@ -34,15 +35,17 @@ const COLUMN_SPEEDS = [0.55, 0.8, 0.6];
 
 export default function InfiniteMediaScroll() {
   const columnRefs = useRef<(HTMLDivElement | null)[]>([]);
+
   const videoRefs = useRef<Record<string, HTMLVideoElement | null>>({});
+
   const offsetsRef = useRef([0, 0, 0]);
+
   const pausedRef = useRef(false);
+
   const rafRef = useRef(0);
 
   /*
    * Split the media into 3 columns.
-   * We deliberately distribute them instead of putting
-   * every item into the same column.
    */
   const columns: MediaItem[][] = [[], [], []];
 
@@ -50,11 +53,15 @@ export default function InfiniteMediaScroll() {
     columns[index % 3].push(item);
   });
 
+  /*
+   * Infinite scrolling animation
+   */
   useEffect(() => {
     let lastTime = performance.now();
 
     function tick(currentTime: number) {
       const delta = Math.min(currentTime - lastTime, 32);
+
       lastTime = currentTime;
 
       if (!pausedRef.current) {
@@ -74,15 +81,21 @@ export default function InfiniteMediaScroll() {
 
           /*
            * Because the content is duplicated,
-           * wrap when approximately one set has passed.
+           * wrap when one complete set has passed.
            */
           const halfHeight = column.scrollHeight / 2;
 
-          if (direction === -1 && offsetsRef.current[index] <= -halfHeight) {
+          if (
+            direction === -1 &&
+            offsetsRef.current[index] <= -halfHeight
+          ) {
             offsetsRef.current[index] += halfHeight;
           }
 
-          if (direction === 1 && offsetsRef.current[index] >= 0) {
+          if (
+            direction === 1 &&
+            offsetsRef.current[index] >= 0
+          ) {
             offsetsRef.current[index] -= halfHeight;
           }
 
@@ -100,6 +113,9 @@ export default function InfiniteMediaScroll() {
     };
   }, []);
 
+  /*
+   * Start video when mouse enters
+   */
   function handleTileEnter(
     columnIndex: number,
     itemIndex: number,
@@ -107,20 +123,33 @@ export default function InfiniteMediaScroll() {
   ) {
     if (item.type !== "videos") return;
 
+    // Stop the infinite scrolling
     pausedRef.current = true;
 
+    /*
+     * IMPORTANT:
+     * Use itemIndex instead of originalIndex.
+     *
+     * This gives every duplicated video its own ref.
+     */
     const key = `${columnIndex}-${itemIndex}`;
+
     const video = videoRefs.current[key];
 
     if (video) {
       video.currentTime = 0;
 
-      video.play().catch(() => {
-        // Browser autoplay restrictions
-      });
+      video
+        .play()
+        .catch(() => {
+          // Ignore browser playback errors
+        });
     }
   }
 
+  /*
+   * Pause video when mouse leaves
+   */
   function handleTileLeave(
     columnIndex: number,
     itemIndex: number,
@@ -128,14 +157,17 @@ export default function InfiniteMediaScroll() {
   ) {
     if (item.type !== "videos") return;
 
-    pausedRef.current = false;
-
     const key = `${columnIndex}-${itemIndex}`;
+
     const video = videoRefs.current[key];
 
     if (video) {
       video.pause();
+      video.currentTime = 0;
     }
+
+    // Resume infinite scrolling
+    pausedRef.current = false;
   }
 
   return (
@@ -143,6 +175,7 @@ export default function InfiniteMediaScroll() {
 
       {/* SECTION TITLE */}
       <div className="max-w-6xl mx-auto px-6 md:px-16 mb-14">
+
         <p className="text-[#d4af37] uppercase tracking-widest text-sm mb-4 text-center">
           Our Work
         </p>
@@ -150,6 +183,7 @@ export default function InfiniteMediaScroll() {
         <h2 className="text-3xl md:text-5xl font-extrabold uppercase tracking-wide text-center">
           Moments We&apos;ve Crafted
         </h2>
+
       </div>
 
 
@@ -165,8 +199,10 @@ export default function InfiniteMediaScroll() {
         "
         style={{
           height: "650px",
+
           maskImage:
             "linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+
           WebkitMaskImage:
             "linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
         }}
@@ -214,15 +250,29 @@ export default function InfiniteMediaScroll() {
 
                   {displayItems.map((item, itemIndex) => {
 
+                    /*
+                     * Original item index.
+                     *
+                     * Used only to identify the original media item.
+                     */
                     const originalIndex =
                       itemIndex % column.length;
 
+                    /*
+                     * IMPORTANT:
+                     *
+                     * itemIndex is used here instead of originalIndex.
+                     *
+                     * Since every column is duplicated,
+                     * the first and second copies now have
+                     * different video refs.
+                     */
                     const videoKey =
-                      `${columnIndex}-${originalIndex}`;
+                      `${columnIndex}-${itemIndex}`;
 
                     /*
                      * Slightly different sizes create
-                     * the editorial/masonry feeling.
+                     * the editorial / masonry feeling.
                      */
                     const isLarge =
                       (itemIndex + columnIndex) % 4 === 0;
@@ -241,17 +291,25 @@ export default function InfiniteMediaScroll() {
                         style={{
                           height: isLarge ? 300 : 240,
                         }}
+
+                        /*
+                         * Start video on hover
+                         */
                         onMouseEnter={() =>
                           handleTileEnter(
                             columnIndex,
-                            originalIndex,
+                            itemIndex,
                             item
                           )
                         }
+
+                        /*
+                         * Stop video when cursor leaves
+                         */
                         onMouseLeave={() =>
                           handleTileLeave(
                             columnIndex,
-                            originalIndex,
+                            itemIndex,
                             item
                           )
                         }
@@ -259,6 +317,7 @@ export default function InfiniteMediaScroll() {
 
                         {item.type === "photos" ? (
 
+                          /* PHOTO */
                           <img
                             src={item.src}
                             alt=""
@@ -276,6 +335,7 @@ export default function InfiniteMediaScroll() {
 
                         ) : (
 
+                          /* VIDEO */
                           <video
                             ref={(el) => {
                               videoRefs.current[videoKey] = el;
@@ -299,7 +359,7 @@ export default function InfiniteMediaScroll() {
 
                         )}
 
-                        {/* Subtle overlay */}
+                        {/* SUBTLE OVERLAY */}
                         <div
                           className="
                             pointer-events-none
@@ -317,12 +377,15 @@ export default function InfiniteMediaScroll() {
                   })}
 
                 </div>
+
               </div>
             );
           })}
 
         </div>
+
       </div>
+
     </section>
   );
 }

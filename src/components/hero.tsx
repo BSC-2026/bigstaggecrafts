@@ -153,16 +153,15 @@ export default function Hero({ play = true }: HeroProps) {
           <p
             className="
               text-zinc-200
-              text-base
-              md:text-lg
+              text-display
+              md:text-sm
               leading-relaxed
+              mb-7
               font-display
             "
           >
-            We’re a creative content and production house
-            that moves at the speed of your ambition. From
-            idea to load-out and beyond. Where speed
-            meets craftsmanship.
+            WE TURN IDEAS INTO EXPERIENCES.
+From intimate gatherings to large-scale celebrations, we plan, produce and execute events with precision — bringing every detail together from concept to completion.
           </p>
         </div>
 
@@ -183,30 +182,42 @@ export default function Hero({ play = true }: HeroProps) {
               font-display
             "
           >
-            We craft formats that stick — from an 8-second cue
-            to a full-scale concert. Same-day edits to feature-
-            length nights, we deliver at every scale.
+           WE CREATE EVENTS THAT PEOPLE REMEMBER.
+Corporate events, college fests, concerts, launches, award shows and special occasions — from the first idea to the final applause, we make every moment count.
           </p>
 
           <button
-            className="
-              border
-              border-gold
-              px-7
-              py-3
-              text-gold
-              text-xs
-              font-semibold
-              tracking-[0.25em]
-              uppercase
-              hover:bg-gold
-              hover:text-black
-              transition-all
-              duration-300
-            "
-          >
-            Connect +
-          </button>
+  onClick={() => {
+    const target = document.querySelector("#contact");
+
+    if (target && window.lenisInstance) {
+      window.lenisInstance.scrollTo(target as HTMLElement, {
+        offset: -80,
+      });
+    } else if (target) {
+      target.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  }}
+  className="
+    border
+    border-gold
+    px-7
+    py-3
+    text-gold
+    text-xs
+    font-semibold
+    tracking-[0.25em]
+    uppercase
+    hover:bg-gold
+    hover:text-black
+    transition-all
+    duration-300
+  "
+>
+  Connect +
+</button>
         </div>
       </div>
     </section>

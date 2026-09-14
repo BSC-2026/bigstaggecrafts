@@ -43,7 +43,7 @@ export default function Navbar() {
         scrolled ? "bg-ink/90 backdrop-blur-md border-b border-white/5" : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-8xl items-center justify-between px-6 py-5 md:px-16">
+      <div className="mx-auto grid max-w-8xl grid-cols-[1fr_auto_1fr] items-center px-6 py-5 md:px-16">
         <a
           href="#home"
           onClick={(e) => handleNavClick(e, "#home")}
@@ -65,13 +65,13 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <a
-          href="#contact"
-          onClick={(e) => handleNavClick(e, "#contact")}
-          className="hidden rounded-sm border border-gold/60 px-5 py-2.5 text-sm font-display text-gold transition-colors hover:bg-gold hover:text-ink md:inline-block"
-        >
-          Plan Your Event
-        </a>
+      <a
+  href="#contact"
+  onClick={(e) => handleNavClick(e, "#contact")}
+  className="hidden justify-self-end rounded-sm border border-gold/60 px-5 py-2.5 text-sm font-display text-gold transition-colors hover:bg-gold hover:text-ink md:inline-block"
+>
+  Plan Your Event
+</a>
 
         <button
           aria-label={menuOpen ? "Close menu" : "Open menu"}
