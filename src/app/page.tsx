@@ -5,7 +5,6 @@ import Hero from '@/components/hero';
 import About from '@/components/about';
 import Services from '@/components/services';
 import WhyChooseUs from '@/components/Whychooseus';
-import PastClients from '@/components/PastClients';
 import IntroSequence from '@/components/IntroSequence';
 import Leadership from '@/components/Leadership';
 import MediaGallery from '@/components/MediaGallery';
